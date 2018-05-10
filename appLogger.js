@@ -1,6 +1,8 @@
 const winston = require('winston');
 const path = require('path');
 const correlator = require('express-correlation-id');
+const appInfo = require('./appInfo');
+
 
 const loglevel = process.env.LOG_LEVEL || 'debug';
 
@@ -10,8 +12,14 @@ const addLogType = winston.format((info, opts) => {
 });
 
 
-const addModulePath = winston.format((info, opts) => {
-    info.modulePath = opts.modulePath;
+const addAppInfo = winston.format((info, opts) => {
+    Object.assign(info, appInfo);
+    return info;  
+});
+
+
+const addModule = winston.format((info, opts) => {
+    info.module = opts.modulePath;
     return info;  
 });
 
@@ -19,7 +27,7 @@ const addModulePath = winston.format((info, opts) => {
 const addCorrelationId = winston.format((info, opts) => {
     //info.correlationId = opts.correlationId;
     const correlationId = correlator.getId() || "-";
-    console.log("correlationId: " +  correlationId);
+    //console.log("correlationId: " +  correlationId);
     info.correlationId = correlationId;
     return info;  
 });
@@ -47,7 +55,8 @@ const getLogger = function(module) {
     const loggerFormat = winston.format.combine(
         //winston.format.label({ label: modulePath }),
         addLogType(),
-        addModulePath({ modulePath }),
+        addAppInfo(),
+        addModule({ modulePath }),
         addCorrelationId(),
         winston.format.timestamp(),
         winston.format.json()
@@ -57,7 +66,7 @@ const getLogger = function(module) {
         level: loglevel,
         format: loggerFormat,
         transports: [
-            new winston.transports.Console()
+            new winston.transports.Console({stderrLevels: []})
         ]
     });
 

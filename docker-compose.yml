@@ -12,9 +12,9 @@ services:
       options:
         labels: "com.docker.stack.namespace,com.docker.swarm.node.id,com.docker.swarm.service.id,com.docker.swarm.service.name,com.docker.swarm.task.id,kz.kcell.eit.business-service,kz.kcell.eit.it-service,kz.kcell.eit.subsystem,kz.kcell.eit.production-status"
     deploy:
-      replicas: 1
-      placement:
-        constraints: [node.role == manager]
+      replicas: 3
+      #placement:
+      #  constraints: [node.role == manager]
       resources:
         limits:
           cpus: "0.1"

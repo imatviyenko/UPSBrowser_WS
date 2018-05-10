@@ -2,6 +2,7 @@ const appLogger = require('../appLogger')(module);
 
 const getADUsers = function(req, res) {
     appLogger.debug('getADUsers invoked');
+    
 
     /*
         public string WorkEmail;
@@ -48,6 +49,8 @@ const getADUsers = function(req, res) {
             }            
         ]
     };
+
+    appLogger.debug('Returning result data in response', {context: result});
 
     res.json(result);
 };

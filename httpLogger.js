@@ -1,4 +1,5 @@
 const morgan = require('morgan');
+const appInfo = require('./appInfo');
 
 morgan.token('correlationId', function getCorrelationId (req) {
     return req.correlationId()
@@ -33,11 +34,13 @@ function jsonFormat(tokens, req, res) {
     httpLogRecord += " " + '"' + getStringToken('user-agent') + '"';
 
     const obj = {
+        ...appInfo,
         logType: 'httplog',
         typestamp: (new Date()).toISOString(),
         correlationId: getStringToken('correlationId'),
-        httpLogRecord: httpLogRecord
+        message: httpLogRecord
     };
+    
 
     return JSON.stringify(obj);
 }
