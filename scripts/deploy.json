@@ -1,0 +1,10 @@
+{
+  "dockerStackName": "upsbrowser_ws",
+  "dockerImageName": "upsbrowser_ws_api",
+  "dockerRegistryPath": "kc-docker1.kcell.kz:5000",
+  "sslCertSecretName": "upsbrowser_ws_sslcert.cert",
+  "sslCertKeySecretName": "upsbrowser_ws_sslcert.key",
+  "sslCertPemSecretName": "upsbrowser_ws_sslcert.pem",
+  "usersFileSecretName": "upsbrowser_ws_users.json",
+  "configName": "upsbrowser_ws_config"
+}

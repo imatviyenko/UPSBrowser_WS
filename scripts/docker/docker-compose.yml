@@ -1,0 +1,53 @@
+version: "3.6"
+services:
+  web:
+    image: kc-docker1.kcell.kz:5000/upsbrowser_ws_api
+    secrets:
+      - source: upsbrowser_ws_sslcert.cert
+        target: sslcert.cert
+      - source: upsbrowser_ws_sslcert.key
+        target: sslcert.key
+      - source: upsbrowser_ws_users.json
+        target: users.json
+    configs:
+      - source: upsbrowser_ws_config
+        target: /run/config.json
+    deploy:
+      replicas: 1
+      
+      placement:
+        constraints: [node.role == manager]
+      
+      resources:
+        limits:
+          cpus: "0.1"
+          memory: 50M
+      restart_policy:
+        condition: on-failure
+    ports:
+      - "4030:3000"
+    networks:
+      - upsbrowser_ws_net
+    environment:
+      - TZ=Asia/Almaty
+    
+    logging:
+      driver: fluentd
+      options:
+        fluentd-address: "tcp://127.0.0.1:25225"
+        tag: oms.api.applogging
+    
+networks:
+  upsbrowser_ws_net:
+secrets:
+  upsbrowser_ws_sslcert.cert:
+    external: true
+
+  upsbrowser_ws_sslcert.key: 
+    external: true
+    
+  upsbrowser_ws_users.json:
+    external: true
+configs:
+  upsbrowser_ws_config:
+    external: true

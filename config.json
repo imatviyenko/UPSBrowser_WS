@@ -1,7 +1,0 @@
-{
-    "clientsFilePath": "/run/secrets/clients.json",
-    "wsTlsCertPath": "/run/secrets/cert.pem",
-    "wsTlsKeyPath": "/run/secrets/key.pem",
-    "jwtIssuer": "kcell.eit.ws",
-    "jwtAudience": "kcell.eit.ws.upsbrowser"
-}

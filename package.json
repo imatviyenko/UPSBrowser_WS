@@ -1,19 +1,28 @@
 {
   "name": "upsbrowser_ws",
-  "version": "1.0.0",
-  "description": "",
-  "main": "server.js",
+  "version": "0.0.0",
+  "private": true,
   "scripts": {
-    "start": "node server.js",
-    "deploy": "@powershell -NoProfile -ExecutionPolicy Unrestricted -Command ./scripts/deploy_docker.ps1"
+    "start": "cross-env NODE_ENV=development node ./index.js",
+    "deploy": "@powershell -NoProfile -ExecutionPolicy Unrestricted -Command ./scripts/deploy.ps1",
+    "secrets:deploy": "@powershell -NoProfile -ExecutionPolicy Unrestricted -Command ./scripts/deploy-secrets.ps1",
+    "config:deploy": "@powershell -NoProfile -ExecutionPolicy Unrestricted -Command ./scripts/deploy-config.ps1"
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
-    "express": "^4.16.3",
-    "express-correlation-id": "^1.2.0",
+    "cls-hooked": "^4.2.2",
+    "cookie-parser": "~1.4.3",
+    "express": "~4.16.0",
     "express-jwt": "^5.3.1",
-    "morgan": "^1.9.0",
+    "helmet": "^3.12.1",
+    "http-errors": "~1.6.2",
+    "moment": "^2.22.2",
+    "morgan": "~1.9.0",
+    "passport": "^0.4.0",
+    "passport-http": "^0.3.0",
+    "uuid": "^3.2.1",
     "winston": "^3.0.0-rc3"
+  },
+  "devDependencies": {
+    "cross-env": "^5.2.0"
   }
 }

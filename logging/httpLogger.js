@@ -1,8 +1,14 @@
 const morgan = require('morgan');
-const appInfo = require('./appInfo');
+const appInfo = require('../config/appInfo');
 
 morgan.token('correlationId', function getCorrelationId (req) {
-    return req.correlationId()
+    const correlationId = req.correlationId || '-';
+    return correlationId;
+});
+
+morgan.token('sessionIdHash', function getSessionIdHash (req) {
+    const sessionIdHash = req.sessionIdHash || '-';
+    return sessionIdHash;
 });
 
 function jsonFormat(tokens, req, res) {
@@ -38,6 +44,7 @@ function jsonFormat(tokens, req, res) {
         logType: 'httplog',
         typestamp: (new Date()).toISOString(),
         correlationId: getStringToken('correlationId'),
+        sessionIdHash: getStringToken('sessionIdHash'),
         httpLogRecord: httpLogRecord
     };
     
@@ -46,31 +53,3 @@ function jsonFormat(tokens, req, res) {
 }
 
 module.exports = morgan(jsonFormat);
-
-
-
-
-
-
-/*
-const morganFormatAsObj = {
-    logType: 'HttpLog',
-    correlationId: ':correlationId',
-    httpLogRecord: ':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent"'
-};
-
-
-const morganFormatAsObj = {
-    logType: 'httplog',
-    correlationId: ':correlationId',
-    httpLogRecord: ':remote-addr - :remote-user [:date[clf]] \\":method :url HTTP/:http-version\\"'
-};
-
-
-const morganFormat = JSON.stringify(morganFormatAsObj);
-*/
-
-
-//app.use(morgan('combined'));
-//const morganFormat = '{"logType":"HttpLog", "correlationId":":correlationId","httpLogRecord":":remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent" "}';
-//console.log(morganFormat);
