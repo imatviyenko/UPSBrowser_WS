@@ -22,4 +22,4 @@ routes(app);
 const port = 8080;
 app.listen(port);
 appLogger.info('express started on port: ' + port);
-appLogger.info('test message 1', {"context": "some context data"});
+appLogger.info('test message 1', {context: {test1: 1111, test2: 2222}});

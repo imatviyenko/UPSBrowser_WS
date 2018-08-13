@@ -4,7 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "deploy": "@powershell -NoProfile -ExecutionPolicy Unrestricted -Command ./scripts/deploy_docker.ps1"
   },
   "author": "",
   "license": "ISC",

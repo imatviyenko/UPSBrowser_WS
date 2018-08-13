@@ -1,5 +1,5 @@
 module.exports = {
-    "app": "upsbrowser",
-    "component": "ws",
+    "app": "wstemplate1",
+    "component": "api",
     "env":"production"
 };

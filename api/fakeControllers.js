@@ -2,6 +2,8 @@ const appLogger = require('../appLogger')(module);
 
 const getADUsers = function(req, res) {
     appLogger.debug('getADUsers invoked');
+
+    appLogger.debug('test message 2', {context: {value: "dasdasdsadasdsa"}});
     
 
     /*

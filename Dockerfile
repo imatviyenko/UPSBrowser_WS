@@ -1,4 +1,4 @@
-FROM kc-docker1.kcell.kz:5000/node1
+FROM node:slim
 
 
 # Set proxy server settings which will be apllied INSIDE the running container

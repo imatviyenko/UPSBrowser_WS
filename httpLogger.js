@@ -38,7 +38,7 @@ function jsonFormat(tokens, req, res) {
         logType: 'httplog',
         typestamp: (new Date()).toISOString(),
         correlationId: getStringToken('correlationId'),
-        message: httpLogRecord
+        httpLogRecord: httpLogRecord
     };
     
 
