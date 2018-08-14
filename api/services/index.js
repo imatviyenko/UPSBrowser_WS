@@ -3,21 +3,17 @@ const config = require('../../config/config.js');
 const ldapjs = require('ldapjs');
 const util = require('util');
 
-
-
-
-
 const createLdapClientBindPromise = (ldapClient, login, password) => {
     appLogger.debug('createLdapClientBindPromise invoked');
     return new Promise( (resolve, reject) => {
         ldapClient.once('error', error => {
-            appLogger.error('LDAP error 1: ', {data: {error}});
+            appLogger.error('LDAP error in createLdapClientBindPromise->ldapClient.once block: ', {data: {error}});
             reject(error);
         });            
 
         ldapClient.bind(login, password, error => {
             if (error) {
-                appLogger.error('LDAP error 2: ', {data: {error}});
+                appLogger.error('LDAP error in createLdapClientBindPromise->ldapClient.bind block: ', {data: {error}});
                 reject(error);
             };
             resolve();
@@ -26,17 +22,15 @@ const createLdapClientBindPromise = (ldapClient, login, password) => {
 };
 
 const parseEntry = entry => {
-    console.log("parseEntry invoked");
     const record = {
-        "dn": entry.object.dn,
-        "givenName": entry.object.givenName,
-        "sn": entry.object.sn,
-        "displayName": entry.object.displayName,
-        "mail": entry.object.mail,
-        "title": entry.object.title,
-        "department": entry.object.department,
-        "mobilePhoneNumber": entry.object.mobile,
-        "deskPhoneNumber": entry.object.physicalDeliveryOfficeName // Desk phone number in Kcell AD
+        FirstName: entry.object.givenName,
+        LastName: entry.object.sn,
+        DisplayName: entry.object.displayName,
+        WorkEmail: entry.object.mail,
+        JobTitle: entry.object.title,
+        Department: entry.object.department,
+        CellPhone: entry.object.mobile,
+        WorkPhone: entry.object.physicalDeliveryOfficeName // Desk phone number in Kcell AD
     };
     return record;
 };
@@ -48,13 +42,11 @@ const createLdapClientSearchResponsePromise = (searchResponse) => {
     return new Promise( (resolve, reject) => {
 
         searchResponse.on('searchEntry', entry => {
-            console.log('SearchResponse searchEntry event fired!!!');
             const record = parseEntry(entry);
             records.push(record);
         });
         
         searchResponse.on('end', result => {
-            console.log('SearchResponse end event fired!!!');
             if (result && result.status === 0) {
                 resolve(records);
             } else {
@@ -63,9 +55,7 @@ const createLdapClientSearchResponsePromise = (searchResponse) => {
         });
 
         searchResponse.on('error', error => {
-            console.log('SearchResponse error event fired!!!');
-            console.log(error);
-            appLogger.error('LDAP error 2: ', {data: {error}});
+            appLogger.error('LDAP error in createLdapClientSearchResponsePromise->searchResponse.on("error") handler:', {data: {error}});
             reject(error);
         });
     });
@@ -79,7 +69,6 @@ const getUsersBySearchString = (searchString) => {
     var ldapClient = ldapjs.createClient({
         url: config.ldap.ldapServerURL,
         tlsOptions: {
-            //ca: [ config.secrets.ldapCA_cert ]
             rejectUnauthorized: false
           }
     });
@@ -92,20 +81,22 @@ const getUsersBySearchString = (searchString) => {
                 filter: `(&(&(objectClass=user)(objectCategory=person)(mail=*))(|(name=*${searchString}*)(mail=*${searchString}*@*)))`,
                 scope: 'sub',
                 attributes: ['dn', 'mail', 'displayName', 'title', 'department', 'givenName', 'sn', 'physicalDeliveryOfficeName', 'mobile']
-            };            
+            };
+            appLogger.debug('Starting LDAP search operation');
             return ldapClientSearchFunc(config.ldap.baseDN, searchOptions);
         })
         .then( searchResponse => {
-            appLogger.debug('searchResponse object is:', {data:{searchResponse}});
+            appLogger.debug('LDAP search operation returned searchResponse object');
+            appLogger.debug('Waiting for searchResponse "end" event');
             return createLdapClientSearchResponsePromise(searchResponse);
         })
-        .then( entries => {
-            appLogger.debug('entries.length:', {data:{entries_length: entries.length}});
-            return entries;
+        .then( records => {
+            appLogger.debug('Results retrieved from searchResponse');
+            appLogger.debug('records.length:', {data:{records_length: records.length}});
+            return records;
         })
         .catch( (error)=> {
-            console.log(error);
-            appLogger.error('LDAP error 3: ', {data: {error}});
+            appLogger.error('LDAP error in createLdapClientBindPromise->promise chain catch block: ', {data: {error}});
             return reject(error);
         });
 

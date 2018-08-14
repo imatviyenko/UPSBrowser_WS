@@ -13,17 +13,21 @@ const services = require('../services');
 router.get('/searchadusers', function(req, res, next) {  
   appLogger.debug('/adusers GET handler invoked anonymously');
 
-  let searchString = req.query.searchstring;
+  let searchString = req.query.searchstring.toString();
   appLogger.debug('searchString:', {data: {searchString}});
+  if (searchString.length < 3) {
+    appLogger.warn('searchString in two short, returning empty result');
+    res.json([]);
+  };
+
+  
 
   services.getUsersBySearchString(searchString)
-    .then( data => {
-      console.log("data:");
-      console.log(data);
-      res.json(data);
+    .then( users => {
+      res.json(users);
     })
     .catch ( error => {
-      appLogger.error('Error calling services.getUsersBySearchString:', {data: {error}});
+      appLogger.error('Error in /adusers GET handler->promise chain catch block:', {data: {error}});
       next(error);
     });
   
