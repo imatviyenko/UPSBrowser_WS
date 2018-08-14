@@ -8,34 +8,22 @@ const passport = require('passport');
 const accessControl = require('../../access-control');
 const services = require('../services');
 
-/* GET to the root path of the web server, i.e. https://server.company.com/ */
-// Anonymous acccess is allowed to this path and no authentication is required
-router.get('/', function(req, res, next) {  
-  appLogger.debug('/ GET handler invoked anonymously');
+// GET to /searchadusers with searchstring query parameter 
+// Anonymous acccess is allowed
+router.get('/searchadusers', function(req, res, next) {  
+  appLogger.debug('/adusers GET handler invoked anonymously');
 
-  services.getDataFromExternalSystem()
+  let searchString = req.query.searchstring;
+  appLogger.debug('searchString:', {data: {searchString}});
+
+  services.getUsersBySearchString(searchString)
     .then( data => {
+      console.log("data:");
+      console.log(data);
       res.json(data);
     })
     .catch ( error => {
-      appLogger.error('Error calling services.getDataFromExternalSystem:', {data: {error}});
-      next(error);
-    });
-  
-});
-
-/* GET to /secured path, i.e. https://server.company.com/secured */
-// This route uses Passport framework configured for HTTP basic authenticaion, 
-// where all username and password pairs are stored in Docker secret "users.json"
-router.get('/secured', accessControl.passportBasic.authentication, function(req, res, next) {  
-  appLogger.debug('/secured GET handler invoked with basic authenticaion');
-
-  services.getDataFromExternalSystem()
-    .then( (data) => {
-      res.json(data);
-    })
-    .catch ( (error) => {
-      appLogger.error('Error calling services.getDataFromExternalSystem:', {data: {error}});
+      appLogger.error('Error calling services.getUsersBySearchString:', {data: {error}});
       next(error);
     });
   
