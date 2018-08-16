@@ -1,5 +1,5 @@
 # DO NOT include production mode secrets in the git repository
-config/prod-secrets
+config/PROD-SECRETS-SENSITIVE
 
 
 # Logs
