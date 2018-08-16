@@ -1,5 +1,5 @@
 {
-  "httpPort": 3000,
+  "httpPort": 443,
   "ldap": {
     "ldapServerURL": "ldaps://ldap.kcell.kz:636",
     "baseDN": "dc=kcell,dc=kz"

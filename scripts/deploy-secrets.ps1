@@ -8,11 +8,10 @@ $config = Get-Content -Raw -Path scripts\deploy.json | ConvertFrom-Json;
 # SCRIPT ENTRY POINT
 $sslCertSecretName = $($config.sslCertSecretName);
 $sslCertKeySecretName = $($config.sslCertKeySecretName);
-$usersFileSecretName = $($config.usersFileSecretName);
 $sslCertPemSecretName = $($config.sslCertPemSecretName);
 
 Write-Output "`n---------------------------";
-Write-Output "Checking if all four required files sslcert.cert, sslcert.key, sslcert.pem and users.json are present in the config/PROD-SECRETS-SENSITIVE folder ...";
+Write-Output "Checking if all  required files sslcert.cert, sslcert.key and sslcert.pem  are present in the config/PROD-SECRETS-SENSITIVE folder ...";
 $secretSourceFileIsMissing =  
     ( `
         ! (test-Path -Path config\PROD-SECRETS-SENSITIVE\sslcert.cert) `
@@ -20,8 +19,6 @@ $secretSourceFileIsMissing =
         ! (test-Path -Path config\PROD-SECRETS-SENSITIVE\sslcert.key) `
         -or `
         ! (test-Path -Path config\PROD-SECRETS-SENSITIVE\sslcert.pem) `
-        -or `
-        ! (test-Path -Path config\PROD-SECRETS-SENSITIVE\users.json) `
     );
 if ($secretSourceFileIsMissing) {
     Write-Output "Error: one of the required source files or Docker Swarm secrets is missing in config/PROD-SECRETS-SENSITIVE folder";
@@ -42,9 +39,15 @@ Write-Output "`n---------------------------";
 Write-Output "Creating secret $sslCertPemSecretName ...";
 docker secret create $sslCertPemSecretName config\PROD-SECRETS-SENSITIVE\sslcert.pem;
 
+
 Write-Output "`n---------------------------";
-Write-Output "Creating secret $usersFileSecretName ...";
-docker secret create $usersFileSecretName config\PROD-SECRETS-SENSITIVE\users.json;
+Write-Output "Creating secret upsbrowser_ws_ldapUserLogin ...";
+docker secret create upsbrowser_ws_ldapUserLogin config\PROD-SECRETS-SENSITIVE\ldapUserLogin;
+
+
+Write-Output "`n---------------------------";
+Write-Output "Creating secret upsbrowser_ws_ldapUserPassword ...";
+docker secret create upsbrowser_ws_ldapUserPassword config\PROD-SECRETS-SENSITIVE\ldapUserPassword;
 
 
 Write-Output "`n---------------------------";

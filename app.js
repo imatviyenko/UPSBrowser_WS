@@ -24,6 +24,15 @@ app.use(helmet());
 app.use(passport.initialize());
 
 
+/*
+const testMiddleware1 = (req, res, next) => {
+  console.log('req.headers:');
+  console.log(JSON.stringify(req.headers));
+  return next();
+};
+app.use(testMiddleware1);
+*/
+
 // API routes
 const mainRooter = require('./api/routes');
 app.use('/', mainRooter);
@@ -40,6 +49,8 @@ app.use(function(req, res, next) {
 // error handler
 app.use(function(error, req, res, next) {
   appLogger.error("Error handling middleware invoked", {data: {error}});
+  console.log("error:");
+  console.log(error);
   
   const correlationId = req.correlationId || '-';
   
