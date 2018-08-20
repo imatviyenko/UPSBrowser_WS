@@ -3,6 +3,7 @@ const httpLogger = require('./logging/httpLogger');
 const correlator = require('./logging/correlator');
 
 const createError = require('http-errors');
+const serializeError = require('serialize-error');
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
@@ -48,10 +49,7 @@ app.use(function(req, res, next) {
 
 // error handler
 app.use(function(error, req, res, next) {
-  appLogger.error("Error handling middleware invoked", {data: {error}});
-  console.log("error:");
-  console.log(error);
-  
+  appLogger.error("Error handling middleware invoked", {data: {error: serializeError(error)}});
   const correlationId = req.correlationId || '-';
   
   return res

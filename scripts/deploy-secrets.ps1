@@ -51,5 +51,11 @@ docker secret create upsbrowser_ws_ldapUserPassword config\PROD-SECRETS-SENSITIV
 
 
 Write-Output "`n---------------------------";
+Write-Output "Creating secrets for trusted clients public certs ...";
+docker secret create upsbrowser_ws_sp13dev1_cert_v4.cert config\PROD-SECRETS-SENSITIVE\sp13dev1_cert_v4.cert;
+
+
+
+Write-Output "`n---------------------------";
 Write-Output "Docker Swarm secrets have been created successfully`n";
 Write-Output "**************************************************`n`n";

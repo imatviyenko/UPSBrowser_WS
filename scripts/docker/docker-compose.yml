@@ -11,6 +11,8 @@ services:
         target: ldapUserLogin
       - source: upsbrowser_ws_ldapUserPassword
         target: ldapUserPassword
+      - source: upsbrowser_ws_sp13dev1_cert_v4.cert
+        target: sp13dev1_cert_v4.cert
     configs:
       - source: upsbrowser_ws_config
         target: /run/config.json
@@ -48,7 +50,10 @@ secrets:
 
   upsbrowser_ws_ldapUserPassword: 
     external: true
-    
+
+  upsbrowser_ws_sp13dev1_cert_v4.cert: 
+    external: true
+        
 configs:
   upsbrowser_ws_config:
     external: true
