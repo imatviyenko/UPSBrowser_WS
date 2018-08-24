@@ -2,6 +2,7 @@ const appLogger = require('../../logging/appLogger')(module);
 
 const express = require('express');
 const router = express.Router();
+const serializeError = require('serialize-error');
 
 const passport = require('passport');
 
@@ -12,8 +13,6 @@ const services = require('../services');
 // JWT authentication is enforced
 router.get('/searchadusers', accessControl.passportJwt.authentication, function(req, res, next) {  
   appLogger.debug('/adusers GET handler invoked with passportJwt authentication', {data:{user:req.user}});
-  //console.log("req.user:");
-  //console.log(req.user);
 
   let searchString = req.query.searchstring.toString();
   appLogger.debug('searchString:', {data: {searchString}});
@@ -29,7 +28,7 @@ router.get('/searchadusers', accessControl.passportJwt.authentication, function(
       res.json(users);
     })
     .catch ( error => {
-      appLogger.error('Error in /adusers GET handler->promise chain catch block:', {data: {error}});
+      appLogger.error('Error in /adusers GET handler->promise chain catch block:', {data: {error: serializeError(error)}});
       next(error);
     });
   
@@ -64,7 +63,7 @@ router.post('/getusersbyemails', accessControl.passportJwt.authentication, funct
       res.json(users);
     })
     .catch ( error => {
-      appLogger.error('Error in /getusersbyemails POST handler->promise chain catch block:', {data: {error}});
+      appLogger.error('Error in /getusersbyemails POST handler->promise chain catch block:', {data: {error: serializeError(error)}});
       next(error);
     });
   
