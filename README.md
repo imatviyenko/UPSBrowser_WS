@@ -1,4 +1,6 @@
-# Node.js web service template optimized for running in Docker Swarm environment
+# External users web service for SharePoint UPSBrowser tool
+- this web service is supposed to be used as an external data source for UPSBrowser tool for SharePoint ()
+
 The generated application (web service) template has the following features:
 - npm scripts for deploying to Docker Swarm and for creating Docker secrets - PowerShell version for Windows and Shell scripts for Unix/Linux;;
 - https binding only, uses several techniques available in the helmet npm module for mitigating common web security risk;

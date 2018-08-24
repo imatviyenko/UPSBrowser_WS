@@ -130,19 +130,6 @@ const getUsersByEmails = (emails) => {
     let array1 = emails.filter(email=>email).map(mapFunc1);
     combinedEmailsFilter = `(|${array1.join("")})`;
 
-    /*
-    let combinedEmailsFilter;
-    if (emails.length === 1) {
-        combinedEmailsFilter = `(mail=${emails[0]})`;
-    } else {
-        const mapFunc1 = email => {
-            return `(mail=${email})`;
-        };
-        let array1 = emails.filter(email=>email).map(mapFunc1);
-        combinedEmailsFilter = `(${array1.join("|")})`;
-    }
-    */
-
     const filter = `(&(objectClass=user)(objectCategory=person)${combinedEmailsFilter})`;
     const scope = 'sub';
     const attributes =  ['dn', 'mail', 'displayName', 'title', 'department', 'givenName', 'sn', 'physicalDeliveryOfficeName', 'mobile'];
