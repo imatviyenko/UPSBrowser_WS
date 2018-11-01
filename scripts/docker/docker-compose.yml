@@ -13,6 +13,8 @@ services:
         target: ldapUserPassword
       - source: upsbrowser_ws_sp13dev1_cert_v4.cert
         target: sp13dev1_cert_v4.cert
+      - source: upsbrowser_ws_sm_ext_cert_v1.cert
+        target: sm_ext_cert_v1.cert
     configs:
       - source: upsbrowser_ws_config
         target: /run/config.json
@@ -34,6 +36,7 @@ services:
       - upsbrowser_ws_net
     environment:
       - TZ=Asia/Almaty
+      - LOG_LEVEL=silly
     
     
 networks:
@@ -53,7 +56,10 @@ secrets:
 
   upsbrowser_ws_sp13dev1_cert_v4.cert: 
     external: true
-        
+
+  upsbrowser_ws_sm_ext_cert_v1.cert: 
+    external: true
+    
 configs:
   upsbrowser_ws_config:
     external: true

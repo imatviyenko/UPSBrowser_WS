@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "cross-env NODE_ENV=development node ./index.js",
+    "start": "cross-env NODE_ENV=development LOG_LEVEL=silly node ./index.js",
     "deploy": "@powershell -NoProfile -ExecutionPolicy Unrestricted -Command ./scripts/deploy.ps1",
     "secrets:deploy": "@powershell -NoProfile -ExecutionPolicy Unrestricted -Command ./scripts/deploy-secrets.ps1",
     "config:deploy": "@powershell -NoProfile -ExecutionPolicy Unrestricted -Command ./scripts/deploy-config.ps1"

@@ -1,1 +1,2 @@
-ldap_user
+Enter the login of AD user which has LDAP access to domain controllers.
+You will be prompted for the password for this user account when you start the service in the dev mode.

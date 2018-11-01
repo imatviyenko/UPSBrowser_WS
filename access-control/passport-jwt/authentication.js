@@ -18,14 +18,16 @@ const getClientPublicKey = (request, rawJwtToken, done) => {
     // The token will be properly validated later by the passport-jwt strategy 
     // and the signature cryptographically verified using with the client cert public key we got here.
     const jwtData = jwt.decode(rawJwtToken, {json: true});
+    appLogger.silly('rawJwtToken:', {data:{rawJwtToken}});
     //console.log("jwtData:");
     //console.log(jwtData);
     const friendlyNameClaimValue = jwtData.friendlyName;
     //console.log("friendlyNameClaimValue: " + friendlyNameClaimValue);
     appLogger.silly('friendlyNameClaimValue:', {data:{friendlyNameClaimValue}});
     try {
+        //const clientCertPublicKey = config.getDockerSecret(friendlyNameClaimValue + '.cert').replace(/\r\n/g, '');
         const clientCertPublicKey = config.getDockerSecret(friendlyNameClaimValue + '.cert');
-        //console.log("clientCertPublicKey: " + clientCertPublicKey);
+        appLogger.silly('clientCertPublicKey:', {data:{clientCertPublicKey}});
         return done(null, clientCertPublicKey);
     } catch (error) {
         appLogger.error('Error gettting client public key:', {data:{error}});

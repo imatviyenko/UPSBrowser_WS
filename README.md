@@ -1,5 +1,22 @@
 # External users web service for SharePoint UPSBrowser tool
 
+## Usage
+### How to add new trusted client certificate
+1. Save the public part of the trusted client's certificate as a cert file with base64 encoding
+2. Copy the saved .cert file to "config/PROD-SECRETS-SENSITIVE" subfolder in this project
+3. Modify "scripts/deploy-secrets.ps1" file - add **"docker secret create upsbrowser_ws_*.cert config\PROD-SECRETS-SENSITIVE\*.cert"** command
+4. Modify "scripts/docker/docke-compose.yml" file, add the two lines for the new mapped secret in "services->web->secrtes" section:
+      - source: upsbrowser_ws_*.cert
+        target: *.cert
+5. Modify "scripts/docker/docker-compose.yml" file, add the two lines for the new mapped secret in "secrtes" section in the bottom of the file:
+      - upsbrowser_ws_*.cert: 
+        external: true
+
+6. Execute "npm run secrets:deploy"
+7. Execute "npm run deploy"
+
+
+
 ## Overview
 - this web service is supposed to be used as an external data source for UPSBrowser tool for SharePoint (https://github.com/imatviyenko/UPSBrowser);
 - retrieves users from the configured LDAP directory and sends them to the caller as JSON data;

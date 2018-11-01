@@ -37,7 +37,7 @@ const addCorrelationId = winston.format((info, opts) => {
     return info;  
 });
 
-
+/*
 const addSessionIdHash = winston.format((info, opts) => {
     const requestContext = getNamespace('requestContext');
     let sessionIdHash;
@@ -53,7 +53,7 @@ const addSessionIdHash = winston.format((info, opts) => {
     info.sessionIdHash = sessionIdHash;
     return info;  
 });
-
+*/
 
 // https://gist.github.com/miguelmota/1868673cc004dfce5a69
 const getLogger = function(module) {
@@ -64,7 +64,7 @@ const getLogger = function(module) {
         addAppInfo(),
         addModule({ modulePath }),
         addCorrelationId(),
-        addSessionIdHash(),
+        /*addSessionIdHash(),*/
         winston.format.timestamp(),
         winston.format.json()
     );
