@@ -1,7 +1,7 @@
 # External users web service for SharePoint UPSBrowser tool
 
 ## Usage
-### How to add new trusted client certificate
+### How to add a new trusted client certificate
 1. Save the public part of the trusted client's certificate as a cert file with base64 encoding
 2. Copy the saved .cert file to "config/PROD-SECRETS-SENSITIVE" subfolder in this project
 3. Modify "scripts/deploy-secrets.ps1" file - add **"docker secret create upsbrowser_ws_*.cert config\PROD-SECRETS-SENSITIVE\*.cert"** command
